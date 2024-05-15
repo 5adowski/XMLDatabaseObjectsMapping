@@ -2,14 +2,8 @@ package sadowski.wojciech.app.person;
 
 import sadowski.wojciech.app.person.type.Type;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import java.util.Objects;
 
-@XmlRootElement(name = "Person")
-@XmlType(propOrder = {"personId", "firstName", "lastName", "mobile", "email", "pesel"})
 public class Person {
     private String personId;
     private String firstName;
@@ -60,37 +54,30 @@ public class Person {
         return type;
     }
 
-    @XmlElement
     public void setPersonId(String personId) {
         this.personId = personId;
     }
 
-    @XmlElement
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @XmlElement
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    @XmlElement
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
-    @XmlElement
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @XmlElement
     public void setPesel(String pesel) {
         this.pesel = pesel;
     }
 
-    @XmlTransient
     public void setType(Type type) {
         this.type = type;
     }
