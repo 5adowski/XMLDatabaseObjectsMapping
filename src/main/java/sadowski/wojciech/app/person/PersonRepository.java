@@ -5,8 +5,6 @@ import sadowski.wojciech.app.parser.Parser;
 import sadowski.wojciech.app.person.type.Type;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,7 @@ public class PersonRepository {
     private final Parser<Person> parser;
 
     public PersonRepository() {
-        this.parser = new Parser<>(Person.class);
+        this.parser = new Parser<>(new PersonHandler());
     }
 
     public Person getByIdFromInternal(String personId) {
