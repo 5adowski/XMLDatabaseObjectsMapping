@@ -4,7 +4,6 @@ import sadowski.wojciech.app.person.type.Type;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.SplittableRandom;
 
 public class PersonServiceTest {
     private static final PersonService SERVICE = new PersonService();
