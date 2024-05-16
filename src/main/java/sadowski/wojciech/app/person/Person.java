@@ -1,15 +1,22 @@
 package sadowski.wojciech.app.person;
 
+import sadowski.wojciech.app.annotation.XMLElement;
 import sadowski.wojciech.app.person.type.Type;
 
 import java.util.Objects;
 
 public class Person {
+    @XMLElement
     private String personId;
+    @XMLElement
     private String firstName;
+    @XMLElement
     private String lastName;
+    @XMLElement
     private String mobile;
+    @XMLElement
     private String email;
+    @XMLElement
     private String pesel;
     private Type type;
 
