@@ -1,7 +1,9 @@
 package sadowski.wojciech.app.person;
 
+import sadowski.wojciech.app.configuration.DatabaseConfiguration;
 import sadowski.wojciech.app.person.type.Type;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,6 +12,7 @@ public class PersonServiceTest {
     private static final Person TEST_PERSON = new Person("1123331", "Jan", "Kowalski", "501554332", "jan.kowalski@mail.com", "8910145862", Type.internal);
 
     public static void main(String[] args) {
+        createDatabaseDirectory(DatabaseConfiguration.PEOPLE_PATH_CATALOG);
         // setup database with test data
         // given
         SERVICE.create(TEST_PERSON);
@@ -194,6 +197,18 @@ public class PersonServiceTest {
 
     private static String testFailed(Object expected, Object received) {
         return String.format("%s failed!\nExpected:%s\nReceived:%s", Thread.currentThread().getStackTrace()[2].getMethodName(), expected, received);
+    }
+
+    // added in case if there is no directory yet
+    private static void createDatabaseDirectory(String path) {
+        File internalDirectory = new File(path + Type.internal);
+        File externalDirectory = new File(path + Type.external);
+        if(!internalDirectory.exists()) {
+            internalDirectory.mkdirs();
+        }
+        if(!externalDirectory.exists()) {
+            externalDirectory.mkdirs();
+        }
     }
 
 }
