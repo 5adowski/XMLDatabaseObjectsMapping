@@ -1,30 +1,42 @@
 package sadowski.wojciech.app.parser;
 
-import javax.xml.bind.*;
+import org.xml.sax.SAXException;
+import sadowski.wojciech.app.parser.handler.XMLHandler;
+
+import javax.xml.parsers.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Parser<T> {
-    private JAXBContext context;
-    private JAXBIntrospector introspector;
+    private SAXParser parser;
+    private final XMLHandler handler;
 
-    public Parser(Class<?>... classes) {
-        setDefault(classes);
+    public Parser(XMLHandler handler) {
+        this.handler = handler;
+        try {
+            this.parser = SAXParserFactory.newInstance().newSAXParser();
+        } catch (ParserConfigurationException exception) {
+            System.out.println("Problem occurred during SAXParser instance creation with the requested configuration:\n" + exception.getMessage());
+        } catch (SAXException exception) {
+            System.out.println("Problem occurred during initialization of the underlying parser:\n" + exception.getMessage());
+        }
     }
 
     @SuppressWarnings("unchecked")
     public T getObjectFromFile(File file) {
-        T object = null;
-        if (file.exists()) {
+        if(file.exists()) {
             try {
-                Unmarshaller unmarshaller = this.context.createUnmarshaller();
-                object = (T) unmarshaller.unmarshal(file);
-            } catch (JAXBException exception) {
-                System.out.println("Problem occurred during unmarshalling:\n" + exception.getMessage());
+                parser.parse(file.getPath(), handler);
+            } catch (SAXException exception) {
+                System.out.println("Problem occurred during parsing the given XML content:\n" + exception.getMessage());
+            } catch (IOException exception) {
+                System.out.println("Problem occurred during reading the given input stream:\n" + exception.getMessage());
             }
+            return (T) handler.getObject();
+        } else {
+            return null;
         }
-        return object;
     }
 
     public ArrayList<T> getObjectsFromDirectory(String path) {
@@ -41,27 +53,7 @@ public class Parser<T> {
     }
 
     public void writeObjectToFile(T object, String path) {
-        if (introspector.isElement(object) && path.endsWith(".xml")) {
-            try {
-                Marshaller marshaller = context.createMarshaller();
-                File file = new File(path);
-                marshaller.marshal(object, file);
-                file.createNewFile();
-            } catch (JAXBException exception) {
-                System.out.println("Problem occurred during marshalling:\n" + exception.getMessage());
-            } catch (IOException exception) {
-                System.out.println("Problem occurred during creating the file:\n" + exception.getMessage());
-            }
-        }
-    }
 
-    private void setDefault(Class<?>... classes) {
-        try {
-            this.context = JAXBContext.newInstance(classes);
-            this.introspector = context.createJAXBIntrospector();
-        } catch (JAXBException exception) {
-            System.out.println("Problem occurred during context creation:\n" + exception.getMessage());
-        }
     }
 
 }
